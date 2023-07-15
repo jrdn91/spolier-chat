@@ -1,12 +1,17 @@
-import "react-native-gesture-handler";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
-import SignUpForm from "./app/forms/SignUpForm";
 import * as eva from "@eva-design/eva";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, useColorScheme } from "react-native";
+import "react-native-gesture-handler";
 
-import { SignedIn, SignedOut } from "./app/components/Auth";
+import { NavigationContainer } from "@react-navigation/native";
+import { ApplicationProvider } from "@ui-kitten/components";
+import Navigator from "./app/Navigator";
 import { AuthProvider } from "./app/providers/AuthProvider";
-import { ApplicationProvider, Text } from "@ui-kitten/components";
+import isToday from "dayjs/plugin/isToday";
+import isBetween from "dayjs/plugin/isBetween";
+import dayjs from "dayjs";
+dayjs.extend(isToday);
+dayjs.extend(isBetween);
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -15,16 +20,11 @@ export default function App() {
       {...eva}
       theme={colorScheme === "light" ? eva.light : eva.dark}
     >
+      <StatusBar style="auto" />
       <AuthProvider>
-        <SafeAreaView style={styles.container}>
-          <StatusBar style="auto" />
-          <SignedIn>
-            <Text>Open up App.tsx to start working on your app!</Text>
-          </SignedIn>
-          <SignedOut>
-            <SignUpForm />
-          </SignedOut>
-        </SafeAreaView>
+        <NavigationContainer>
+          <Navigator />
+        </NavigationContainer>
       </AuthProvider>
     </ApplicationProvider>
   );
